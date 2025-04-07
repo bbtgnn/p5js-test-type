@@ -9,6 +9,12 @@
   <body>
     <main></main>
     <script src="./sketch.js"></script>
+
+    <p class="top left">SPACE_TYPE</p>
+    <p class="top right">v 0.0.1</p>
+
+    <p class="bottom left">2025</p>
+    <p class="bottom right">ABA_PERUGIA</p>
   </body>
 
   <style>
@@ -19,6 +25,27 @@
     }
     canvas {
       display: block;
+    }
+
+    p {
+      position: fixed;
+      font-family: monospace;
+      color: white;
+      padding: 10px;
+      margin: 0;
+    }
+
+    .top {
+      top: 0;
+    }
+    .left {
+      left: 0;
+    }
+    .right {
+      right: 0;
+    }
+    .bottom {
+      bottom: 0;
     }
   </style>
 </html>
