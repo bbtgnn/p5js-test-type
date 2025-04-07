@@ -1,13 +1,15 @@
-/** @typedef {import("p5").Font} Font */
+let columns = 10;
+let rows = 10;
 
-let diameter = 100;
+//
 
-/** @type {Font} */
 let font;
 
 function preload() {
   font = loadFont("./assets/InputMonoCondensed-Light.ttf");
 }
+
+//
 
 function setup() {
   createCanvas(windowWidth, windowHeight, "webgl");
@@ -17,28 +19,19 @@ function setup() {
   textSize(height / 10);
 }
 
+//
+
 function draw() {
   background("blue");
-
   orbitControl();
 
-  // directionalLight(255, 0, 0, 1, 1, 0);
-  // ambientLight(80);
-
-  let count = 10;
-  let rows = 10;
-
-  let angle = 360 / count;
+  let angle = 360 / columns;
+  let diameter = textSize();
 
   fill("white");
 
-  // push();
-  // normalMaterial();
-  // sphere(50);
-  // pop();
-
   rotateY(-frameCount);
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < columns; i++) {
     push();
     rotateY(angle * i);
     translate(diameter, 0, 0);
@@ -50,21 +43,8 @@ function draw() {
       text("Ciao", 0, 0);
       pop();
     }
-    // ellipse(0, 0, diameter, diameter);
     pop();
   }
-
-  // textSize(100);
-  // for (let i = 0; i < count; i++) {
-  //   push();
-  //   noFill();
-  //   stroke("black");
-  //   // rotateY(angle * i);
-  //   translate(diameter, 0, 0);
-  //   text("Ciao", 0, 0);
-  //   // ellipse(0, 0, diameter, diameter);
-  //   pop();
-  // }
 }
 
 function windowResized() {
