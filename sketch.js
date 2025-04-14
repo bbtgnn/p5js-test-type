@@ -1,48 +1,59 @@
-let columns = 10;
-let rows = 10;
+let font_size;
+let copie = 10;
+let total_height;
 
 //
 
 let font;
 
 function preload() {
-  font = loadFont("./assets/InputMonoCondensed-Light.ttf");
+  font = loadFont("./assets/Optimo - Px Grotesk Light Italic.ttf");
 }
 
 //
 
+let cam;
+
 function setup() {
   createCanvas(windowWidth, windowHeight, "webgl");
   angleMode(DEGREES);
+  ellipseMode(CENTER);
+
+  font_size = height / 10;
+  total_height = font_size * copie;
+
+  cam = createCamera();
+  cam.setPosition(-500, -800, 500);
+  cam.lookAt(0, 0, 0);
+  setCamera(cam);
 
   textFont(font);
-  textSize(height / 10);
+  textSize(font_size);
+  textAlign("center");
+
+  console.log(font, textDescent(), textAscent());
 }
 
 //
 
 function draw() {
   background("blue");
-  orbitControl();
 
-  let angle = 360 / columns;
-  let diameter = textSize();
+  let txt = "CiapCiapCiap";
+  let rect_w = textWidth(txt);
 
-  fill("white");
+  translate(0, -total_height / 2);
 
-  rotateY(-frameCount);
-  for (let i = 0; i < columns; i++) {
+  for (let i = 0; i < copie; i++) {
     push();
-    rotateY(angle * i);
-    translate(diameter, 0, 0);
-    for (let j = 0; j < rows; j++) {
-      const a = cos(frameCount * 5 + j * 20);
-      const m = map(a, -1, 1, 0, textSize());
-      push();
-      translate(m, textSize() * (j - rows / 2), 0);
-      text("Ciao", 0, 0);
-      pop();
-    }
+    textLeading(font_size);
+
+    const translate_amount_base = cos(frameCount * 2 + i * 10);
+    const translate_amount = map(translate_amount_base, -1, 1, -100, 100);
+    translate(0, 0, translate_amount);
+    fill("white");
+
+    text(txt, 0, font_size * i);
     pop();
   }
 }
