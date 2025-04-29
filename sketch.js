@@ -19,7 +19,7 @@ function setup() {
   angleMode(DEGREES);
 
   textFont(font);
-  textSize(height / 10);
+  textSize(height / rows);
 
   cam = createCamera();
   cam.setPosition(0, -900, 400);
@@ -57,5 +57,5 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  textSize(height / 10);
+  textSize(height / rows);
 }
