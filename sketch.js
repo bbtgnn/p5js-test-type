@@ -17,7 +17,17 @@ let cam;
 /** @type {Graphics} */
 let g;
 
-/** @type {{x:number, y:number, z:number, spin: -1 | 1, speed: number}[]} */
+/**
+ * @typedef {Object} Position
+ * @property {number} x - X coordinate
+ * @property {number} y - Y coordinate
+ * @property {number} z - Z coordinate
+ * @property {-1 | 1} spin - Direction of spin
+ * @property {number} speed - Speed of rotation
+ * @property {number} angle - Angle in degrees
+ */
+
+/** @type {Position[]} */
 let positions = [];
 
 function setup() {
@@ -39,6 +49,7 @@ function setup() {
       z: randomCoordinate(),
       spin: random([-1, 1]),
       speed: random(),
+      angle: random(0, 360),
     });
   }
 }
@@ -57,30 +68,18 @@ function draw() {
 
   g.background("white");
   g.textFont(font);
-  g.textSize(20);
+  g.textSize(100);
   g.text("Hello", 0, 100);
 
   texture(g);
   for (let position of positions) {
     push();
     translate(position.x, position.y, position.z);
-    rotateY(position.speed * frameCount);
     rotateX(position.speed * frameCount * position.spin);
-    rotateZ(position.speed * frameCount);
+    rotateZ(position.angle);
     box(100, 100, 100);
     pop();
   }
-
-  push();
-  // Style the sphere.
-  noStroke();
-  specularMaterial(50);
-  shininess(200);
-  metalness(100);
-
-  // Draw the sphere.
-  sphere(30);
-  pop();
 }
 
 function windowResized() {
