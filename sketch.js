@@ -1,6 +1,6 @@
-let columns = 40;
-let rows = 10;
-let testo = ":<>:";
+/** @typedef {import("./p5").Graphics} Graphics */
+/** @typedef {import("./p5").Font} Font */
+/** @typedef {import("./p5").Camera} Camera */
 
 //
 
@@ -14,48 +14,79 @@ function preload() {
 
 let cam;
 
+/** @type {Graphics} */
+let g;
+
+/** @type {{x:number, y:number, z:number, spin: -1 | 1, speed: number}[]} */
+let positions = [];
+
 function setup() {
   createCanvas(windowWidth, windowHeight, "webgl");
   angleMode(DEGREES);
 
-  textFont(font);
-  textSize(height / rows);
+  noStroke();
 
-  cam = createCamera();
-  cam.setPosition(0, -900, 400);
-  cam.lookAt(0, -300, 0);
+  textFont(font);
+
+  g = createGraphics(100, 100);
+
+  //
+
+  for (let i = 0; i < 30; i++) {
+    positions.push({
+      x: randomCoordinate(),
+      y: randomCoordinate(),
+      z: randomCoordinate(),
+      spin: random([-1, 1]),
+      speed: random(),
+    });
+  }
 }
 
 //
 
 function draw() {
-  background("blue");
+  background("white");
   orbitControl();
 
-  let angle = 360 / columns;
-  let diameter = textSize();
+  rotateY(frameCount / 10);
 
-  fill("white");
+  push();
+  fill("red");
+  pop();
 
-  rotateY(-frameCount);
-  for (let i = 0; i < columns; i++) {
+  g.background("white");
+  g.textFont(font);
+  g.textSize(20);
+  g.text("Hello", 0, 100);
+
+  texture(g);
+  for (let position of positions) {
     push();
-    rotateY(angle * i);
-    translate(diameter, 0, 0);
-    for (let j = 0; j < rows; j++) {
-      const a = cos(frameCount * 5 + j * 20);
-      const m = map(a, -1, 1, 0, textSize());
-      // const m = 0;
-      push();
-      translate(m, textSize() * (j - rows / 2), 0);
-      text(testo, 0, 0);
-      pop();
-    }
+    translate(position.x, position.y, position.z);
+    rotateY(position.speed * frameCount);
+    rotateX(position.speed * frameCount * position.spin);
+    rotateZ(position.speed * frameCount);
+    box(100, 100, 100);
     pop();
   }
+
+  push();
+  // Style the sphere.
+  noStroke();
+  specularMaterial(50);
+  shininess(200);
+  metalness(100);
+
+  // Draw the sphere.
+  sphere(30);
+  pop();
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  textSize(height / rows);
+}
+
+function randomCoordinate() {
+  return random(-400, 400);
 }
